@@ -16,6 +16,7 @@ export type TResult = {
   totalAnswered: number;
   totalCorrect: number;
   totalMistakes: number;
+  timeLeftS: number;
 };
 
 export const getDefaultResult = (): TResult => ({
@@ -23,12 +24,15 @@ export const getDefaultResult = (): TResult => ({
   totalAnswered: 0,
   totalCorrect: 0,
   totalMistakes: 0,
+  timeLeftS: 0,
 });
 
 function App() {
   const [stage, setStage] = useState(Stage.START);
   const [result, setResult] = useState<TResult>(getDefaultResult());
   const [clubType, setClubType] = useState(55);
+  const [mainNums, setMainNums] = useState<number[]>([4, 6, 7, 8, 9]);
+  const [durationS, setDurationS] = useState(5 * 60);
 
   return (
     <Container maxWidth="sm">
@@ -37,6 +41,10 @@ function App() {
           setStage={setStage}
           clubType={clubType}
           setClubType={setClubType}
+          mainNums={mainNums}
+          setMainNums={setMainNums}
+          durationS={durationS}
+          setDurationS={setDurationS}
         />
       )}
       {stage === Stage.PROCESS && (
@@ -44,6 +52,10 @@ function App() {
           setStage={setStage}
           setResult={setResult}
           clubType={clubType}
+          mainNums={mainNums}
+          setMainNums={setMainNums}
+          durationS={durationS}
+          setDurationS={setDurationS}
         />
       )}
       {stage === Stage.RESULT && (
@@ -52,6 +64,10 @@ function App() {
           setStage={setStage}
           setResult={setResult}
           result={result}
+          mainNums={mainNums}
+          setMainNums={setMainNums}
+          durationS={durationS}
+          setDurationS={setDurationS}
         />
       )}
     </Container>

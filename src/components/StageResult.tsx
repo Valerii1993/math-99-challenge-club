@@ -11,6 +11,7 @@ import Typography from "@mui/material/Typography";
 import * as React from "react";
 import Button from "@mui/material/Button";
 import { Stage } from "../helpers/Stage.ts";
+import Alert from "@mui/material/Alert";
 
 type TProps = TStageProps & {
   result: TResult;
@@ -32,6 +33,13 @@ const StageResult = ({ setStage, result, setResult, clubType }: TProps) => {
           Start Again
         </Button>
       </div>
+
+      <Alert
+        variant="filled"
+        severity={result.timeLeftS > 0 ? "success" : "warning"}
+      >
+        Time Left: {Math.floor(result.timeLeftS / 60)}m {result.timeLeftS % 60}s
+      </Alert>
 
       <Table>
         <TableHead>

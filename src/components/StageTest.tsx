@@ -11,25 +11,22 @@ import Check from "@mui/icons-material/Check";
 import { type TResult } from "../App.tsx";
 import { Stage } from "../helpers/Stage.ts";
 
-const DURATION_SECONDS = 5 * 60;
-
-const MAIN_NUMS = [4, 6, 7, 8, 9];
 const SECOND_NUMS = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
 type PossibleCombination = [number, number];
 
-const getCalculatedPossibleCombinations = () => {
+const getCalculatedPossibleCombinations = (mainNums: number[]) => {
   const possibleCombinations: PossibleCombination[] = [];
 
-  for (let i = 0; i < MAIN_NUMS.length; i++) {
+  for (let i = 0; i < mainNums.length; i++) {
     for (let j = 0; j < SECOND_NUMS.length; j++) {
-      const mainNum = MAIN_NUMS[i];
+      const mainNum = mainNums[i];
       const secondNum = SECOND_NUMS[j];
 
       possibleCombinations.push([mainNum, secondNum]);
 
-      if (!MAIN_NUMS.includes(secondNum)) {
-        possibleCombinations.push([SECOND_NUMS[j], MAIN_NUMS[i]]);
+      if (!mainNums.includes(secondNum)) {
+        possibleCombinations.push([SECOND_NUMS[j], mainNums[i]]);
       }
     }
   }
@@ -45,18 +42,24 @@ type TProps = TStageProps & {
   setResult: React.Dispatch<React.SetStateAction<TResult>>;
 };
 
-const StageTest = ({ setStage, setResult, clubType }: TProps) => {
+const StageTest = ({
+  setStage,
+  setResult,
+  clubType,
+  mainNums,
+  durationS,
+}: TProps) => {
   const [startTime] = useState(Date.now());
-  const [timeLeft, setTimeLeft] = useState(DURATION_SECONDS); // in seconds
+  const [timeLeft, setTimeLeft] = useState(durationS); // in seconds
   const [possibleCombinations, setPossibleCombinations] = useState(
-    getCalculatedPossibleCombinations()
+    getCalculatedPossibleCombinations(mainNums)
   );
   const [combinationIndex, setCombinationIndex] = useState(
     getRandomCombinationIndex(possibleCombinations)
   );
   const [answerStr, setAnswerStr] = useState("");
   const [currentQuestionNumber, setCurrentQuestionNumber] = useState(1);
-  const durationMs = DURATION_SECONDS * 1000; // 5 minutes in milliseconds
+  const durationMs = durationS * 1000; // 5 minutes in milliseconds
   const minsLeft = Math.floor(timeLeft / 60);
   const secsLeft = timeLeft % 60;
   const isSubmitDisabled = answerStr.length === 0;
@@ -67,10 +70,15 @@ const StageTest = ({ setStage, setResult, clubType }: TProps) => {
 
       // If time is still left, update the time left
       if (elapsedMs < durationMs) {
-        setTimeLeft(DURATION_SECONDS - Math.floor(elapsedMs / 1000));
+        setTimeLeft(durationS - Math.floor(elapsedMs / 1000));
       } else {
         // Time's up
         clearInterval(interval);
+        setResult((prevResult) => {
+          prevResult.timeLeftS = 0;
+
+          return prevResult;
+        });
         setStage(Stage.RESULT);
       }
     }, 1000);
@@ -109,6 +117,7 @@ const StageTest = ({ setStage, setResult, clubType }: TProps) => {
         totalAnswered: prevResult.totalAnswered + 1,
         totalCorrect: prevResult.totalCorrect + (isCorrect ? 1 : 0),
         totalMistakes: prevResult.totalMistakes + (!isCorrect ? 1 : 0),
+        timeLeftS: timeLeft,
       };
     });
     setAnswerStr("");
