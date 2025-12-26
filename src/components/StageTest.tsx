@@ -8,12 +8,10 @@ import { useEffect, useState } from "react";
 import { Box, Button } from "@mui/material";
 import BackspaceIcon from "@mui/icons-material/Backspace";
 import Check from "@mui/icons-material/Check";
-import { STAGE, type TResult } from "../App.tsx";
+import { type TResult } from "../App.tsx";
+import { Stage } from "../helpers/Stage.ts";
 
 const DURATION_SECONDS = 5 * 60;
-// const DURATION_SECONDS = 30;
-export const MAX_QUESTIONS = 55;
-// export const MAX_QUESTIONS = 5;
 
 const MAIN_NUMS = [4, 6, 7, 8, 9];
 const SECOND_NUMS = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
@@ -25,8 +23,14 @@ const getCalculatedPossibleCombinations = () => {
 
   for (let i = 0; i < MAIN_NUMS.length; i++) {
     for (let j = 0; j < SECOND_NUMS.length; j++) {
-      possibleCombinations.push([MAIN_NUMS[i], SECOND_NUMS[j]]);
-      possibleCombinations.push([SECOND_NUMS[j], MAIN_NUMS[i]]);
+      const mainNum = MAIN_NUMS[i];
+      const secondNum = SECOND_NUMS[j];
+
+      possibleCombinations.push([mainNum, secondNum]);
+
+      if (!MAIN_NUMS.includes(secondNum)) {
+        possibleCombinations.push([SECOND_NUMS[j], MAIN_NUMS[i]]);
+      }
     }
   }
 
@@ -41,7 +45,7 @@ type TProps = TStageProps & {
   setResult: React.Dispatch<React.SetStateAction<TResult>>;
 };
 
-const StageTest = ({ setStage, setResult }: TProps) => {
+const StageTest = ({ setStage, setResult, clubType }: TProps) => {
   const [startTime] = useState(Date.now());
   const [timeLeft, setTimeLeft] = useState(DURATION_SECONDS); // in seconds
   const [possibleCombinations, setPossibleCombinations] = useState(
@@ -67,7 +71,7 @@ const StageTest = ({ setStage, setResult }: TProps) => {
       } else {
         // Time's up
         clearInterval(interval);
-        setStage(STAGE.RESULT);
+        setStage(Stage.RESULT);
       }
     }, 1000);
 
@@ -114,8 +118,8 @@ const StageTest = ({ setStage, setResult }: TProps) => {
     setPossibleCombinations(possibleCombinations);
     setCombinationIndex(getRandomCombinationIndex(possibleCombinations));
 
-    if (currentQuestionNumber === MAX_QUESTIONS) {
-      setStage(STAGE.RESULT);
+    if (currentQuestionNumber === clubType) {
+      setStage(Stage.RESULT);
     }
   };
 
@@ -143,7 +147,7 @@ const StageTest = ({ setStage, setResult }: TProps) => {
               fontSize: 24,
             }}
           >
-            {currentQuestionNumber}:
+            {clubType + 1 - currentQuestionNumber}:
           </Box>
         </Grid>
 

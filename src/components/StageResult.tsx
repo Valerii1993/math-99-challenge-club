@@ -1,5 +1,5 @@
 import type { TStageProps } from "./StageStart.tsx";
-import { getDefaultResult, STAGE, type TResult } from "../App.tsx";
+import { getDefaultResult, type TResult } from "../App.tsx";
 import Check from "@mui/icons-material/Check";
 import Clear from "@mui/icons-material/Clear";
 import Table from "@mui/material/Table";
@@ -9,15 +9,15 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
-import { MAX_QUESTIONS } from "./StageTest.tsx";
 import Button from "@mui/material/Button";
+import { Stage } from "../helpers/Stage.ts";
 
 type TProps = TStageProps & {
   result: TResult;
   setResult: React.Dispatch<React.SetStateAction<TResult>>;
 };
 
-const StageResult = ({ setStage, result, setResult }: TProps) => {
+const StageResult = ({ setStage, result, setResult, clubType }: TProps) => {
   return (
     <div>
       <div>
@@ -26,7 +26,7 @@ const StageResult = ({ setStage, result, setResult }: TProps) => {
           sx={{ mb: 5 }}
           onClick={() => {
             setResult(getDefaultResult());
-            setStage(STAGE.START);
+            setStage(Stage.START);
           }}
         >
           Start Again
@@ -36,6 +36,7 @@ const StageResult = ({ setStage, result, setResult }: TProps) => {
       <Table>
         <TableHead>
           <TableRow>
+            <TableCell>#</TableCell>
             <TableCell>Question</TableCell>
             <TableCell align="right">User Answer</TableCell>
             <TableCell align="right">Correct Answer</TableCell>
@@ -43,11 +44,12 @@ const StageResult = ({ setStage, result, setResult }: TProps) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {result.combinations.map((combinationItem) => (
+          {result.combinations.map((combinationItem, index) => (
             <TableRow
               key={`${combinationItem.combination[0]}x${combinationItem.combination[1]}`}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
+              <TableCell align="left">{index + 1}</TableCell>
               <TableCell component="th" scope="row">
                 {`${combinationItem.combination[0]} x ${combinationItem.combination[1]}`}
               </TableCell>
@@ -66,7 +68,7 @@ const StageResult = ({ setStage, result, setResult }: TProps) => {
           ))}
 
           <TableRow>
-            <TableCell></TableCell>
+            <TableCell colSpan={2}></TableCell>
             <TableCell colSpan={2} align="left">
               <Typography color="info">Total questions answered:</Typography>
             </TableCell>
@@ -76,7 +78,7 @@ const StageResult = ({ setStage, result, setResult }: TProps) => {
           </TableRow>
 
           <TableRow>
-            <TableCell></TableCell>
+            <TableCell colSpan={2}></TableCell>
             <TableCell colSpan={2} align="left">
               <Typography color="success">Correctly answered:</Typography>
             </TableCell>
@@ -86,7 +88,7 @@ const StageResult = ({ setStage, result, setResult }: TProps) => {
           </TableRow>
 
           <TableRow>
-            <TableCell></TableCell>
+            <TableCell colSpan={2}></TableCell>
             <TableCell colSpan={2} align="left">
               <Typography color="error">Mistakes:</Typography>
             </TableCell>
@@ -96,13 +98,13 @@ const StageResult = ({ setStage, result, setResult }: TProps) => {
           </TableRow>
 
           <TableRow>
-            <TableCell></TableCell>
+            <TableCell colSpan={2}></TableCell>
             <TableCell colSpan={2} align="left">
               <Typography color="warning">Questions left:</Typography>
             </TableCell>
             <TableCell align="right">
               <Typography color="warning">
-                {MAX_QUESTIONS - result.totalAnswered}
+                {clubType - result.totalAnswered}
               </Typography>
             </TableCell>
           </TableRow>

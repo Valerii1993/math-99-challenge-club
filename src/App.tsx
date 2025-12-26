@@ -4,12 +4,7 @@ import { useState } from "react";
 import StageStart from "./components/StageStart.tsx";
 import StageTest from "./components/StageTest.tsx";
 import StageResult from "./components/StageResult.tsx";
-
-export const STAGE = {
-  START: 1,
-  PROCESS: 2,
-  RESULT: 3,
-};
+import { Stage } from "./helpers/Stage.ts";
 
 export type TResult = {
   combinations: {
@@ -31,17 +26,29 @@ export const getDefaultResult = (): TResult => ({
 });
 
 function App() {
-  const [stage, setStage] = useState(STAGE.START);
+  const [stage, setStage] = useState(Stage.START);
   const [result, setResult] = useState<TResult>(getDefaultResult());
+  const [clubType, setClubType] = useState(55);
 
   return (
     <Container maxWidth="sm">
-      {stage === STAGE.START && <StageStart setStage={setStage} />}
-      {stage === STAGE.PROCESS && (
-        <StageTest setStage={setStage} setResult={setResult} />
+      {stage === Stage.START && (
+        <StageStart
+          setStage={setStage}
+          clubType={clubType}
+          setClubType={setClubType}
+        />
       )}
-      {stage === STAGE.RESULT && (
+      {stage === Stage.PROCESS && (
+        <StageTest
+          setStage={setStage}
+          setResult={setResult}
+          clubType={clubType}
+        />
+      )}
+      {stage === Stage.RESULT && (
         <StageResult
+          clubType={clubType}
           setStage={setStage}
           setResult={setResult}
           result={result}
