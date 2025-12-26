@@ -65,6 +65,7 @@ const StageStart = ({
   for (let i = 2; i <= 12; i++) {
     practiceNumbersJsx.push(
       <Button
+        key={i}
         variant="contained"
         color={mainNums.includes(i) ? "warning" : "info"}
         onClick={() => {
@@ -84,6 +85,7 @@ const StageStart = ({
   for (let i = 1; i <= 5; i++) {
     timeDurationJsx.push(
       <Button
+        key={i}
         variant="contained"
         color={durationS === i * 60 ? "warning" : "info"}
         onClick={() => setDurationS(i * 60)}

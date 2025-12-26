@@ -12,6 +12,9 @@ import * as React from "react";
 import Button from "@mui/material/Button";
 import { Stage } from "../helpers/Stage.ts";
 import Alert from "@mui/material/Alert";
+import Mood from "@mui/icons-material/Mood";
+import { Grade } from "@mui/icons-material";
+import { yellow } from "@mui/material/colors";
 
 type TProps = TStageProps & {
   result: TResult;
@@ -33,6 +36,34 @@ const StageResult = ({ setStage, result, setResult, clubType }: TProps) => {
           Start Again
         </Button>
       </div>
+
+      {clubType === result.totalCorrect && (
+        <Alert
+          variant="filled"
+          severity="success"
+          sx={{
+            mb: 2,
+            alignItems: "center",
+            "& .MuiAlert-icon": { alignItems: "center", py: 0 }, // remove extra vertical padding
+            "& .MuiAlert-message": {
+              display: "flex",
+              alignItems: "center",
+              py: 0,
+            },
+            color: yellow[400],
+            fontWeight: "bold",
+            fontSize: 24,
+            justifyContent: "center",
+          }}
+          icon={false}
+        >
+          <Mood sx={{ color: yellow[400], display: "inline-block" }} />
+          <Grade sx={{ color: yellow[400] }} />
+          YOU DID IT!!!
+          <Grade sx={{ color: yellow[400] }} />
+          <Mood sx={{ color: yellow[400] }} />
+        </Alert>
+      )}
 
       <Alert
         variant="filled"
