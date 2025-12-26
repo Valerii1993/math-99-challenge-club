@@ -5,7 +5,7 @@ import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
 import * as React from "react";
 import { Stage } from "../helpers/Stage.ts";
-import { ButtonGroup } from "@mui/material";
+import { Stack } from "@mui/material";
 
 export type TStageProps = {
   setStage: (level: number) => void;
@@ -65,6 +65,7 @@ const StageStart = ({
   for (let i = 2; i <= 12; i++) {
     practiceNumbersJsx.push(
       <Button
+        variant="contained"
         color={mainNums.includes(i) ? "warning" : "info"}
         onClick={() => {
           if (mainNums.includes(i)) {
@@ -83,6 +84,7 @@ const StageStart = ({
   for (let i = 1; i <= 5; i++) {
     timeDurationJsx.push(
       <Button
+        variant="contained"
         color={durationS === i * 60 ? "warning" : "info"}
         onClick={() => setDurationS(i * 60)}
         sx={{ textTransform: "none" }}
@@ -101,7 +103,7 @@ const StageStart = ({
       spacing={2}
     >
       <Grid>
-        <Card sx={{ minWidth: 275 }}>
+        <Card sx={{ width: "100%" }}>
           <CardContent>
             <Typography variant="h5" component="div">
               Ready to start challenge?
@@ -116,9 +118,15 @@ const StageStart = ({
                 Main Numbers Practice:
               </Typography>
 
-              <ButtonGroup variant="contained">
+              <Stack
+                direction="row"
+                spacing={1}
+                useFlexGap
+                flexWrap="wrap"
+                justifyContent="center"
+              >
                 {practiceNumbersJsx}
-              </ButtonGroup>
+              </Stack>
             </Card>
 
             <Card sx={{ mt: 1, pb: 2 }}>
@@ -126,7 +134,15 @@ const StageStart = ({
                 Time:
               </Typography>
 
-              <ButtonGroup variant="contained">{timeDurationJsx}</ButtonGroup>
+              <Stack
+                direction="row"
+                spacing={1}
+                useFlexGap
+                flexWrap="wrap"
+                justifyContent="center"
+              >
+                {timeDurationJsx}
+              </Stack>
             </Card>
 
             <Button

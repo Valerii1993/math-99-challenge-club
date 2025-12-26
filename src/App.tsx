@@ -35,7 +35,7 @@ function App() {
   const [durationS, setDurationS] = useState(5 * 60);
 
   return (
-    <Container maxWidth="sm">
+    <Container maxWidth="md">
       {stage === Stage.START && (
         <StageStart
           setStage={setStage}
