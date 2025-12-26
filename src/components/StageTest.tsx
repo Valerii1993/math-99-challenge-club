@@ -169,9 +169,13 @@ const StageTest = ({
                 component="div"
                 sx={{ fontWeight: "bold", fontSize: 26 }}
               >
-                {possibleCombinations[combinationIndex][0]} x{" "}
-                {possibleCombinations[combinationIndex][1]} ={" "}
-                {answerStr || "..."}
+                <span>
+                  {possibleCombinations[combinationIndex][0]} x{" "}
+                  {possibleCombinations[combinationIndex][1]} ={" "}
+                </span>
+                <span style={{ display: "inline-block", width: 45 }}>
+                  {answerStr || "???"}
+                </span>
               </Typography>
             </CardContent>
             {/* <CardActions> */}
