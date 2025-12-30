@@ -79,6 +79,7 @@ const StageResult = ({ setStage, result, setResult, clubType }: TProps) => {
             <TableCell>Question</TableCell>
             <TableCell align="right">User Answer</TableCell>
             <TableCell align="right">Correct Answer</TableCell>
+            <TableCell align="right">Time Spent</TableCell>
             <TableCell align="right">Is Correct</TableCell>
           </TableRow>
         </TableHead>
@@ -97,6 +98,9 @@ const StageResult = ({ setStage, result, setResult, clubType }: TProps) => {
                 {combinationItem.correctAnswer}
               </TableCell>
               <TableCell align="right">
+                {(combinationItem.timeSpentMs / 1000).toFixed(1)}s
+              </TableCell>
+              <TableCell align="right">
                 {combinationItem.isCorrect ? (
                   <Check color="success" />
                 ) : (
@@ -107,7 +111,7 @@ const StageResult = ({ setStage, result, setResult, clubType }: TProps) => {
           ))}
 
           <TableRow>
-            <TableCell colSpan={2}></TableCell>
+            <TableCell colSpan={3}></TableCell>
             <TableCell colSpan={2} align="left">
               <Typography color="info">Total questions answered:</Typography>
             </TableCell>
@@ -117,7 +121,7 @@ const StageResult = ({ setStage, result, setResult, clubType }: TProps) => {
           </TableRow>
 
           <TableRow>
-            <TableCell colSpan={2}></TableCell>
+            <TableCell colSpan={3}></TableCell>
             <TableCell colSpan={2} align="left">
               <Typography color="success">Correctly answered:</Typography>
             </TableCell>
@@ -127,7 +131,7 @@ const StageResult = ({ setStage, result, setResult, clubType }: TProps) => {
           </TableRow>
 
           <TableRow>
-            <TableCell colSpan={2}></TableCell>
+            <TableCell colSpan={3}></TableCell>
             <TableCell colSpan={2} align="left">
               <Typography color="error">Mistakes:</Typography>
             </TableCell>
@@ -137,7 +141,7 @@ const StageResult = ({ setStage, result, setResult, clubType }: TProps) => {
           </TableRow>
 
           <TableRow>
-            <TableCell colSpan={2}></TableCell>
+            <TableCell colSpan={3}></TableCell>
             <TableCell colSpan={2} align="left">
               <Typography color="warning">Questions left:</Typography>
             </TableCell>

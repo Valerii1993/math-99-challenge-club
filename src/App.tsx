@@ -12,6 +12,7 @@ export type TResult = {
     userAnswer: number;
     correctAnswer: number;
     isCorrect: boolean;
+    timeSpentMs: number;
   }[];
   totalAnswered: number;
   totalCorrect: number;

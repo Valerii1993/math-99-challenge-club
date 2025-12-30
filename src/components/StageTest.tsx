@@ -50,6 +50,7 @@ const StageTest = ({
   durationS,
 }: TProps) => {
   const [startTime] = useState(Date.now());
+  const [combinationStartTime, setCombinationStartTime] = useState(Date.now());
   const [timeLeft, setTimeLeft] = useState(durationS); // in seconds
   const [possibleCombinations, setPossibleCombinations] = useState(
     getCalculatedPossibleCombinations(mainNums)
@@ -112,6 +113,7 @@ const StageTest = ({
             userAnswer: answerNumber,
             correctAnswer: correctAnswer,
             isCorrect: isCorrect,
+            timeSpentMs: Date.now() - combinationStartTime,
           },
         ],
         totalAnswered: prevResult.totalAnswered + 1,
@@ -122,6 +124,7 @@ const StageTest = ({
     });
     setAnswerStr("");
     setCurrentQuestionNumber((prevNumber) => prevNumber + 1);
+    setCombinationStartTime(Date.now());
 
     possibleCombinations.splice(combinationIndex, 1);
     setPossibleCombinations(possibleCombinations);
