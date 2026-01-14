@@ -16,6 +16,7 @@ import Mood from "@mui/icons-material/Mood";
 import { Grade } from "@mui/icons-material";
 import { yellow } from "@mui/material/colors";
 import { Box, Divider, Grid, Paper } from "@mui/material";
+import Firework from "./Firework.tsx";
 
 type TProps = TStageProps & {
   result: TResult;
@@ -62,31 +63,35 @@ const StageResult = ({ setStage, result, setResult, clubType }: TProps) => {
       </div>
 
       {clubType === result.totalCorrect && (
-        <Alert
-          variant="filled"
-          severity="success"
-          sx={{
-            mb: 2,
-            alignItems: "center",
-            "& .MuiAlert-icon": { alignItems: "center", py: 0 }, // remove extra vertical padding
-            "& .MuiAlert-message": {
-              display: "flex",
+        <>
+          <Alert
+            variant="filled"
+            severity="success"
+            sx={{
+              mb: 2,
               alignItems: "center",
-              py: 0,
-            },
-            color: yellow[400],
-            fontWeight: "bold",
-            fontSize: 24,
-            justifyContent: "center",
-          }}
-          icon={false}
-        >
-          <Mood sx={{ color: yellow[400], display: "inline-block" }} />
-          <Grade sx={{ color: yellow[400] }} />
-          YOU DID IT!!!
-          <Grade sx={{ color: yellow[400] }} />
-          <Mood sx={{ color: yellow[400] }} />
-        </Alert>
+              "& .MuiAlert-icon": { alignItems: "center", py: 0 }, // remove extra vertical padding
+              "& .MuiAlert-message": {
+                display: "flex",
+                alignItems: "center",
+                py: 0,
+              },
+              color: yellow[400],
+              fontWeight: "bold",
+              fontSize: 24,
+              justifyContent: "center",
+            }}
+            icon={false}
+          >
+            <Mood sx={{ color: yellow[400], display: "inline-block" }} />
+            <Grade sx={{ color: yellow[400] }} />
+            YOU DID IT!!!
+            <Grade sx={{ color: yellow[400] }} />
+            <Mood sx={{ color: yellow[400] }} />
+          </Alert>
+
+          <Firework />
+        </>
       )}
 
       <Alert
