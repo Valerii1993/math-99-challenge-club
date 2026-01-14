@@ -37,7 +37,7 @@ function App() {
 
   return (
     // Forbidding touch actions/scrolling page while interacting with the app
-    <Container maxWidth="md" sx={{ touchAction: "none" }}>
+    <Container maxWidth="md">
       {stage === Stage.START && (
         <StageStart
           setStage={setStage}

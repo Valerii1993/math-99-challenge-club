@@ -15,6 +15,7 @@ import Alert from "@mui/material/Alert";
 import Mood from "@mui/icons-material/Mood";
 import { Grade } from "@mui/icons-material";
 import { yellow } from "@mui/material/colors";
+import { Box, Divider, Grid, Paper } from "@mui/material";
 
 type TProps = TStageProps & {
   result: TResult;
@@ -22,6 +23,29 @@ type TProps = TStageProps & {
 };
 
 const StageResult = ({ setStage, result, setResult, clubType }: TProps) => {
+  const resultsSummary = [
+    {
+      label: "Total questions answered",
+      value: result.totalAnswered,
+      color: "info",
+    },
+    {
+      label: "Correctly answered",
+      value: result.totalCorrect,
+      color: "success",
+    },
+    {
+      label: "Mistakes",
+      value: result.totalMistakes,
+      color: "error",
+    },
+    {
+      label: "Questions left",
+      value: clubType - result.totalAnswered,
+      color: "warning",
+    },
+  ];
+
   return (
     <div>
       <div>
@@ -72,6 +96,35 @@ const StageResult = ({ setStage, result, setResult, clubType }: TProps) => {
         Time Left: {Math.floor(result.timeLeftS / 60)}m {result.timeLeftS % 60}s
       </Alert>
 
+      <Grid container my={2}>
+        <Grid offset={{ md: 6, xs: 0 }} size={{ md: 6, xs: 12 }}>
+          <Paper>
+            {resultsSummary.map((summaryItem) => (
+              <React.Fragment key={summaryItem.label}>
+                <Grid container>
+                  <Grid item size={9}>
+                    <Box p={1} textAlign="left">
+                      <Typography color={summaryItem.color}>
+                        {summaryItem.label}:
+                      </Typography>
+                    </Box>
+                  </Grid>
+                  <Grid item size={3}>
+                    <Box p={1} textAlign="right">
+                      <Typography color={summaryItem.color}>
+                        {summaryItem.value}
+                      </Typography>
+                    </Box>
+                  </Grid>
+                </Grid>
+
+                <Divider />
+              </React.Fragment>
+            ))}
+          </Paper>
+        </Grid>
+      </Grid>
+
       <Table>
         <TableHead>
           <TableRow>
@@ -109,48 +162,6 @@ const StageResult = ({ setStage, result, setResult, clubType }: TProps) => {
               </TableCell>
             </TableRow>
           ))}
-
-          <TableRow>
-            <TableCell colSpan={3}></TableCell>
-            <TableCell colSpan={2} align="left">
-              <Typography color="info">Total questions answered:</Typography>
-            </TableCell>
-            <TableCell align="right">
-              <Typography color="info">{result.totalAnswered}</Typography>
-            </TableCell>
-          </TableRow>
-
-          <TableRow>
-            <TableCell colSpan={3}></TableCell>
-            <TableCell colSpan={2} align="left">
-              <Typography color="success">Correctly answered:</Typography>
-            </TableCell>
-            <TableCell align="right">
-              <Typography color="success">{result.totalCorrect}</Typography>
-            </TableCell>
-          </TableRow>
-
-          <TableRow>
-            <TableCell colSpan={3}></TableCell>
-            <TableCell colSpan={2} align="left">
-              <Typography color="error">Mistakes:</Typography>
-            </TableCell>
-            <TableCell align="right">
-              <Typography color="error">{result.totalMistakes}</Typography>
-            </TableCell>
-          </TableRow>
-
-          <TableRow>
-            <TableCell colSpan={3}></TableCell>
-            <TableCell colSpan={2} align="left">
-              <Typography color="warning">Questions left:</Typography>
-            </TableCell>
-            <TableCell align="right">
-              <Typography color="warning">
-                {clubType - result.totalAnswered}
-              </Typography>
-            </TableCell>
-          </TableRow>
         </TableBody>
       </Table>
     </div>

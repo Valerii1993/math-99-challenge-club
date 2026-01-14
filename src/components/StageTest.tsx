@@ -136,7 +136,7 @@ const StageTest = ({
   };
 
   return (
-    <Grid container direction="column" spacing={2}>
+    <Grid container direction="column" spacing={2} sx={{ touchAction: "none" }}>
       {/* Time left */}
       <Grid>
         <Card sx={{ py: 2 }}>
