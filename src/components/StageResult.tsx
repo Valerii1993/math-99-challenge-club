@@ -102,14 +102,14 @@ const StageResult = ({ setStage, result, setResult, clubType }: TProps) => {
             {resultsSummary.map((summaryItem) => (
               <React.Fragment key={summaryItem.label}>
                 <Grid container>
-                  <Grid item size={9}>
+                  <Grid size={9}>
                     <Box p={1} textAlign="left">
                       <Typography color={summaryItem.color}>
                         {summaryItem.label}:
                       </Typography>
                     </Box>
                   </Grid>
-                  <Grid item size={3}>
+                  <Grid size={3}>
                     <Box p={1} textAlign="right">
                       <Typography color={summaryItem.color}>
                         {summaryItem.value}
