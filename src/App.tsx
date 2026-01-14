@@ -36,7 +36,8 @@ function App() {
   const [durationS, setDurationS] = useState(5 * 60);
 
   return (
-    <Container maxWidth="md">
+    // Forbidding touch actions/scrolling page while interacting with the app
+    <Container maxWidth="md" sx={{ touchAction: "none" }}>
       {stage === Stage.START && (
         <StageStart
           setStage={setStage}
