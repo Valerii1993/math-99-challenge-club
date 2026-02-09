@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { Box, Button } from "@mui/material";
 import BackspaceIcon from "@mui/icons-material/Backspace";
 import Check from "@mui/icons-material/Check";
-import { type TResult } from "../App.tsx";
+import { type TOperator, type TResult } from "../App.tsx";
 import { Stage } from "../helpers/Stage.ts";
 
 const SECOND_NUMS = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
@@ -34,9 +34,8 @@ const getCalculatedPossibleCombinations = (mainNums: number[]) => {
   return possibleCombinations;
 };
 
-const getRandomCombinationIndex = (
-  possibleCombinations: PossibleCombination[]
-) => Math.floor(Math.random() * possibleCombinations.length);
+const getRandomArrIndex = (arr: Array<unknown>) =>
+  Math.floor(Math.random() * arr.length);
 
 type TProps = TStageProps & {
   setResult: React.Dispatch<React.SetStateAction<TResult>>;
@@ -48,6 +47,7 @@ const StageTest = ({
   clubType,
   mainNums,
   durationS,
+  operators,
 }: TProps) => {
   const [startTime] = useState(Date.now());
   const [combinationStartTime, setCombinationStartTime] = useState(Date.now());
@@ -56,7 +56,10 @@ const StageTest = ({
     getCalculatedPossibleCombinations(mainNums)
   );
   const [combinationIndex, setCombinationIndex] = useState(
-    getRandomCombinationIndex(possibleCombinations)
+    getRandomArrIndex(possibleCombinations)
+  );
+  const [operator, setOperator] = useState<TOperator>(
+    operators[getRandomArrIndex(operators)]
   );
   const [answerStr, setAnswerStr] = useState("");
   const [currentQuestionNumber, setCurrentQuestionNumber] = useState(1);
@@ -64,6 +67,14 @@ const StageTest = ({
   const minsLeft = Math.floor(timeLeft / 60);
   const secsLeft = timeLeft % 60;
   const isSubmitDisabled = answerStr.length === 0;
+  const firstCombinationNum = possibleCombinations[combinationIndex][0];
+  const secondCombinationNum = possibleCombinations[combinationIndex][1];
+  const product = firstCombinationNum * secondCombinationNum;
+  // If division: dividing product on the first combination number and resul is second combination number
+  const firstNum = operator === "x" ? firstCombinationNum : product;
+  const secondNum =
+    operator === "x" ? secondCombinationNum : firstCombinationNum;
+  const correctAnswer = operator === "x" ? product : secondCombinationNum;
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -101,7 +112,6 @@ const StageTest = ({
   const submitAnswer = () => {
     const answerNumber = parseInt(answerStr);
     const combination = possibleCombinations[combinationIndex];
-    const correctAnswer = combination[0] * combination[1];
     const isCorrect = answerNumber === correctAnswer;
 
     setResult((prevResult) => {
@@ -110,6 +120,7 @@ const StageTest = ({
           ...prevResult.combinations,
           {
             combination,
+            operator,
             userAnswer: answerNumber,
             correctAnswer: correctAnswer,
             isCorrect: isCorrect,
@@ -128,7 +139,8 @@ const StageTest = ({
 
     possibleCombinations.splice(combinationIndex, 1);
     setPossibleCombinations(possibleCombinations);
-    setCombinationIndex(getRandomCombinationIndex(possibleCombinations));
+    setCombinationIndex(getRandomArrIndex(possibleCombinations));
+    setOperator(operators[getRandomArrIndex(operators)]);
 
     if (currentQuestionNumber === clubType) {
       setStage(Stage.RESULT);
@@ -173,8 +185,7 @@ const StageTest = ({
                 sx={{ fontWeight: "bold", fontSize: 26 }}
               >
                 <span>
-                  {possibleCombinations[combinationIndex][0]} x{" "}
-                  {possibleCombinations[combinationIndex][1]} ={" "}
+                  {firstNum} {operator} {secondNum} ={" "}
                 </span>
                 <span style={{ display: "inline-block", width: 45 }}>
                   {answerStr || "???"}

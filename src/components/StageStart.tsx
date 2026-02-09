@@ -6,6 +6,7 @@ import Grid from "@mui/material/Grid";
 import * as React from "react";
 import { Stage } from "../helpers/Stage.ts";
 import { Stack } from "@mui/material";
+import type { TOperator } from "../App.tsx";
 
 export type TStageProps = {
   setStage: (level: number) => void;
@@ -14,10 +15,12 @@ export type TStageProps = {
   setMainNums: (nums: number[]) => void;
   durationS: number;
   setDurationS: (durationS: number) => void;
+  operators: TOperator[];
 };
 
 type TProps = TStageProps & {
   setClubType: (clubType: number) => void;
+  setOperators: React.Dispatch<React.SetStateAction<TOperator[]>>;
 };
 
 const getClubTypeColor = (currentType: number, buttonType: number) =>
@@ -31,6 +34,8 @@ const StageStart = ({
   setMainNums,
   durationS,
   setDurationS,
+  operators,
+  setOperators,
 }: TProps) => {
   const onStartClick = () => {
     if (mainNums.length < clubType / 11) {
@@ -39,6 +44,11 @@ const StageStart = ({
           clubType / 11
         } main numbers for the selected club type of ${clubType}.`
       );
+      return;
+    }
+
+    if (!operators.length) {
+      alert("Please select at least one operator.");
       return;
     }
 
@@ -96,6 +106,29 @@ const StageStart = ({
     );
   }
 
+  const operatorsJsx: React.JSX.Element[] = [];
+  for (const operator of ["x", "/"] as const) {
+    operatorsJsx.push(
+      <Button
+        key={operator}
+        variant="contained"
+        color={operators.includes(operator) ? "warning" : "info"}
+        onClick={() =>
+          setOperators((prev) => {
+            if (prev.includes(operator)) {
+              return operators.filter((val) => val !== operator);
+            }
+
+            return [...prev, operator];
+          })
+        }
+        sx={{ textTransform: "none" }}
+      >
+        {operator}
+      </Button>
+    );
+  }
+
   return (
     <Grid
       container
@@ -144,6 +177,22 @@ const StageStart = ({
                 justifyContent="center"
               >
                 {timeDurationJsx}
+              </Stack>
+            </Card>
+
+            <Card sx={{ mt: 1, pb: 2 }}>
+              <Typography variant="h5" component="div">
+                Operators:
+              </Typography>
+
+              <Stack
+                direction="row"
+                spacing={1}
+                useFlexGap
+                flexWrap="wrap"
+                justifyContent="center"
+              >
+                {operatorsJsx}
               </Stack>
             </Card>
 

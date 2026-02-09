@@ -6,9 +6,12 @@ import StageTest from "./components/StageTest.tsx";
 import StageResult from "./components/StageResult.tsx";
 import { Stage } from "./helpers/Stage.ts";
 
+export type TOperator = "x" | "/";
+
 export type TResult = {
   combinations: {
     combination: [number, number];
+    operator: TOperator;
     userAnswer: number;
     correctAnswer: number;
     isCorrect: boolean;
@@ -34,6 +37,7 @@ function App() {
   const [clubType, setClubType] = useState(55);
   const [mainNums, setMainNums] = useState<number[]>([4, 6, 7, 8, 9]);
   const [durationS, setDurationS] = useState(5 * 60);
+  const [operators, setOperators] = useState<TOperator[]>(["x"]);
 
   return (
     // Forbidding touch actions/scrolling page while interacting with the app
@@ -47,6 +51,8 @@ function App() {
           setMainNums={setMainNums}
           durationS={durationS}
           setDurationS={setDurationS}
+          operators={operators}
+          setOperators={setOperators}
         />
       )}
       {stage === Stage.PROCESS && (
@@ -58,6 +64,7 @@ function App() {
           setMainNums={setMainNums}
           durationS={durationS}
           setDurationS={setDurationS}
+          operators={operators}
         />
       )}
       {stage === Stage.RESULT && (
@@ -70,6 +77,7 @@ function App() {
           setMainNums={setMainNums}
           durationS={durationS}
           setDurationS={setDurationS}
+          operators={operators}
         />
       )}
     </Container>

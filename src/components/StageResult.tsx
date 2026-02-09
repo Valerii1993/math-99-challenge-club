@@ -144,12 +144,18 @@ const StageResult = ({ setStage, result, setResult, clubType }: TProps) => {
         <TableBody>
           {result.combinations.map((combinationItem, index) => (
             <TableRow
-              key={`${combinationItem.combination[0]}x${combinationItem.combination[1]}`}
+              key={`${combinationItem.combination[0]}${combinationItem.operator}${combinationItem.combination[1]}`}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell align="left">{index + 1}</TableCell>
               <TableCell component="th" scope="row">
-                {`${combinationItem.combination[0]} x ${combinationItem.combination[1]}`}
+                {combinationItem.operator === "x" &&
+                  `${combinationItem.combination[0]} x ${combinationItem.combination[1]}`}
+                {combinationItem.operator === "/" &&
+                  `${
+                    combinationItem.combination[0] *
+                    combinationItem.combination[1]
+                  } / ${combinationItem.combination[0]}`}
               </TableCell>
               <TableCell align="right">{combinationItem.userAnswer}</TableCell>
               <TableCell align="right">
